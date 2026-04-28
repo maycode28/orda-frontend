@@ -11,7 +11,8 @@ const pageOffsetStyle = {
 
 const RecommendationsPage = () => {
   const { data = [], isLoading, isError } = useRecommendations(5);
-  const isFallback = data.length > 0 && data.every((item) => item.similarityScore <= 0);
+  const isFallback =
+    data.length > 0 && data.every((item) => item.similarityScore <= 0);
 
   if (isLoading) {
     return <PageLoader />;
@@ -28,14 +29,15 @@ const RecommendationsPage = () => {
           <div className="border-primary/10 overflow-hidden rounded-3xl border bg-white shadow-sm">
             <div className="bg-primary px-5 py-5 text-white">
               <p className="text-xs font-bold tracking-wider uppercase text-white/75">
-                ORDA Recommendation
+                {isFallback ? "Monthly Popular" : "ORDA Recommendation"}
               </p>
               <h1 className="mt-2 text-2xl font-extrabold tracking-tight">
-                다음 산행 코스
+                {isFallback ? "이번 달 인기 코스" : "다음 산행 코스"}
               </h1>
               <p className="mt-2 text-sm leading-5 text-white/80">
-                최근 등산 기록의 거리, 고도, 난이도를 바탕으로 어울리는
-                코스를 골랐어요.
+                {isFallback
+                  ? "아직 맞춤 추천을 만들기 전이라, 이번 달 많이 오른 코스를 먼저 보여드려요."
+                  : "최근 등산 기록의 거리, 고도, 난이도를 바탕으로 어울리는 코스를 골랐어요."}
               </p>
             </div>
 
@@ -78,7 +80,7 @@ const RecommendationsPage = () => {
             <StatePanel message="추천할 코스를 준비하고 있습니다." />
           ) : (
             <>
-              {isFallback && (
+              {isFallback ? (
                 <div className="border-primary/10 mb-3 rounded-2xl border bg-white px-4 py-3 shadow-sm">
                   <p className="text-heading text-sm font-bold">
                     등산 기록이 쌓이면 맞춤 추천이 시작돼요
@@ -87,15 +89,16 @@ const RecommendationsPage = () => {
                     지금은 먼저 둘러보기 좋은 코스를 보여드릴게요.
                   </p>
                 </div>
-              )}
+              ) : null}
 
-              <div className="flex snap-x gap-3 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <div className="flex flex-col gap-3">
                 {data.map((course, index) => (
-                  <div
+                  <RecommendationCard
                     key={course.trailId}
-                    className="w-[310px] shrink-0 snap-center">
-                    <RecommendationCard course={course} rank={index + 1} />
-                  </div>
+                    course={course}
+                    rank={index + 1}
+                    variant={isFallback ? "popular" : "personalized"}
+                  />
                 ))}
               </div>
             </>

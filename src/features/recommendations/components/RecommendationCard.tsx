@@ -15,17 +15,23 @@ const formatSimilarity = (score: number) => {
 interface RecommendationCardProps {
   course: RecommendationCourse;
   rank: number;
+  variant?: "personalized" | "popular";
 }
 
-const RecommendationCard = ({ course, rank }: RecommendationCardProps) => {
+const RecommendationCard = ({
+  course,
+  rank,
+  variant = "personalized"
+}: RecommendationCardProps) => {
   const similarity = formatSimilarity(course.similarityScore);
+  const isPopular = variant === "popular";
 
   return (
     <article className="border-primary/10 rounded-2xl border bg-white px-4 py-4 shadow-sm">
       <div className="mb-3 flex items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="text-primary mb-1 text-[11px] font-bold tracking-wider uppercase">
-            추천 {rank}
+            {isPopular ? `인기 ${rank}` : `추천 ${rank}`}
           </p>
           <h2 className="text-heading line-clamp-2 text-base font-bold tracking-tight">
             {course.name}
@@ -59,11 +65,15 @@ const RecommendationCard = ({ course, rank }: RecommendationCardProps) => {
 
       <div className="mt-3 flex items-center justify-between rounded-xl bg-primary/10 px-3 py-2">
         <span className="text-body text-xs font-semibold">
-          {similarity
+          {!isPopular && similarity
             ? `회원님의 취향과 ${similarity} 일치`
-            : "등산 기록이 쌓이면 더 정교해져요"}
+            : isPopular
+              ? "이번 달 많이 오른 코스"
+              : "등산 기록이 쌓이면 더 정교해져요"}
         </span>
-        <span className="text-primary text-xs font-bold">코스</span>
+        <span className="text-primary text-xs font-bold">
+          {isPopular ? "인기" : "맞춤"}
+        </span>
       </div>
     </article>
   );
