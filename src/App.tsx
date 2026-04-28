@@ -16,6 +16,9 @@ const HikingSessionReplayPage = lazy(
 const SignupPage = lazy(() => import("./pages/auth/SignupPage"));
 const MyPage = lazy(() => import("./pages/mypage/MyPage"));
 const EditProfilePage = lazy(() => import("./pages/mypage/EditProfilePage"));
+const RecommendationsPage = lazy(
+  () => import("./pages/recommendations/RecommendationsPage")
+);
 const KakaoCallbackPage = lazy(
   () => import("./pages/auth/KakaoCallbackPage")
 );
@@ -81,6 +84,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <EditProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/recommendations"
+            element={
+              <ProtectedRoute>
+                <RecommendationsPage />
               </ProtectedRoute>
             }
           />

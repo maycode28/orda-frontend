@@ -2,6 +2,7 @@
  * 📄 src/pages/hiking/HikingRecordPage.tsx
  */
 import { useState, useRef, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import maplibregl from "maplibre-gl";
 import { useHiking } from "@/features/hiking/hooks/useHiking";
 import GpsTrackingMap from "@/features/gps/components/GpsTrackingMap";
@@ -115,6 +116,7 @@ const StatItem = ({
 type PageState = "idle" | "hiking" | "finished";
 
 export default function HikingRecordPage() {
+  const navigate = useNavigate();
   const {
     geoJson,
     currentPos,
@@ -450,6 +452,39 @@ export default function HikingRecordPage() {
               </svg>
               <span style={{ fontSize: 9, color: "#89943d", fontWeight: 600 }}>
                 현위치
+              </span>
+            </button>
+
+            <button
+              onClick={() => navigate("/recommendations")}
+              style={{
+                width: 44,
+                height: 44,
+                borderRadius: "50%",
+                background: "white",
+                border: "1px solid #e2e8f0",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                gap: 2
+              }}>
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#89943d"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round">
+                <path d="M3 17l4-8 4 4 4-6 4 10" />
+                <path d="M4 20h16" />
+              </svg>
+              <span style={{ fontSize: 8, color: "#89943d", fontWeight: 700 }}>
+                추천
               </span>
             </button>
 
